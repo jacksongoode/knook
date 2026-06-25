@@ -135,6 +135,14 @@ private struct GeneralSettingsPane: View {
                         model.saveSettings()
                     }
                 ))
+
+                Toggle("Show timer in menu bar", isOn: Binding(
+                    get: { model.settings.showTimerInMenuBar },
+                    set: { newValue in
+                        model.settings.showTimerInMenuBar = newValue
+                        model.saveSettings()
+                    }
+                ))
             } footer: {
                 Text("Launch knook automatically when you log in.")
             }

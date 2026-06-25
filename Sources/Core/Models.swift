@@ -479,6 +479,7 @@ public struct AppSettings: Codable, Hashable, Sendable {
     public var wellnessSettings: WellnessSettings
     public var onboardingState: OnboardingState
     public var contextualEducationState: ContextualEducationState
+    public var showTimerInMenuBar: Bool
 
     public init(
         schemaVersion: Int = AppSettings.currentSchemaVersion,
@@ -487,7 +488,8 @@ public struct AppSettings: Codable, Hashable, Sendable {
         smartPauseSettings: SmartPauseSettings,
         wellnessSettings: WellnessSettings,
         onboardingState: OnboardingState,
-        contextualEducationState: ContextualEducationState
+        contextualEducationState: ContextualEducationState,
+        showTimerInMenuBar: Bool = true
     ) {
         self.schemaVersion = schemaVersion
         self.breakSettings = breakSettings
@@ -496,6 +498,7 @@ public struct AppSettings: Codable, Hashable, Sendable {
         self.wellnessSettings = wellnessSettings
         self.onboardingState = onboardingState
         self.contextualEducationState = contextualEducationState
+        self.showTimerInMenuBar = showTimerInMenuBar
     }
 
     public static let `default` = AppSettings(
@@ -519,7 +522,8 @@ public struct AppSettings: Codable, Hashable, Sendable {
                 completedAt: onboardingState.completedAt,
                 lastCompletedVersion: onboardingState.lastCompletedVersion ?? AppSettings.currentSchemaVersion
             ),
-            contextualEducationState: contextualEducationState
+            contextualEducationState: contextualEducationState,
+            showTimerInMenuBar: showTimerInMenuBar
         )
     }
 
@@ -531,6 +535,7 @@ public struct AppSettings: Codable, Hashable, Sendable {
         case wellnessSettings
         case onboardingState
         case contextualEducationState
+        case showTimerInMenuBar
     }
 
     public init(from decoder: Decoder) throws {
@@ -542,6 +547,7 @@ public struct AppSettings: Codable, Hashable, Sendable {
         let wellnessSettings = try container.decodeIfPresent(WellnessSettings.self, forKey: .wellnessSettings) ?? .migratedDefault
         let onboardingState = try container.decodeIfPresent(OnboardingState.self, forKey: .onboardingState) ?? .migratedDefault
         let contextualEducationState = try container.decodeIfPresent(ContextualEducationState.self, forKey: .contextualEducationState) ?? .migratedDefault
+        let showTimerInMenuBar = try container.decodeIfPresent(Bool.self, forKey: .showTimerInMenuBar) ?? true
 
         self.init(
             schemaVersion: schemaVersion,
@@ -550,7 +556,8 @@ public struct AppSettings: Codable, Hashable, Sendable {
             smartPauseSettings: smartPauseSettings,
             wellnessSettings: wellnessSettings,
             onboardingState: onboardingState,
-            contextualEducationState: contextualEducationState
+            contextualEducationState: contextualEducationState,
+            showTimerInMenuBar: showTimerInMenuBar
         )
     }
 }

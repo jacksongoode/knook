@@ -57,7 +57,8 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
                 let content = MenuBarLabelFormatter.content(
                     launchPhase: launchPhase,
                     state: appState,
-                    showsUpdateBadge: updateState.isAvailable
+                    showsUpdateBadge: updateState.isAvailable,
+                    showTimer: self?.model.settings.showTimerInMenuBar ?? true
                 )
                 self?.updateStatusBarButton(content: content)
             }
@@ -140,7 +141,7 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
         if let countdown = content.countdownText {
             button.title = countdown
             button.imagePosition = .imageLeading
-            button.font = NSFont.monospacedDigitSystemFont(ofSize: 0, weight: .regular)
+            button.font = NSFont.monospacedSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
         } else {
             button.title = ""
             button.imagePosition = .imageOnly

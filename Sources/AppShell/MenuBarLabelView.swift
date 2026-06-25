@@ -12,7 +12,8 @@ enum MenuBarLabelFormatter {
     static func content(
         launchPhase: AppLaunchPhase,
         state: AppState,
-        showsUpdateBadge: Bool = false
+        showsUpdateBadge: Bool = false,
+        showTimer: Bool = true
     ) -> MenuBarLabelContent {
         guard launchPhase == .ready else {
             return MenuBarLabelContent(
@@ -26,7 +27,7 @@ enum MenuBarLabelFormatter {
         if let activeBreak = state.activeBreak {
             return MenuBarLabelContent(
                 symbolName: "pause.circle.fill",
-                countdownText: state.countdownText,
+                countdownText: showTimer ? state.countdownText : nil,
                 accessibilityLabel: "\(activeBreak.kind.title) in progress",
                 showsUpdateBadge: showsUpdateBadge
             )
@@ -35,7 +36,7 @@ enum MenuBarLabelFormatter {
         if state.isPaused {
             return MenuBarLabelContent(
                 symbolName: "pause.fill",
-                countdownText: state.pauseReason,
+                countdownText: showTimer ? state.pauseReason : nil,
                 accessibilityLabel: state.pauseReason ?? "Paused",
                 showsUpdateBadge: showsUpdateBadge
             )
@@ -44,7 +45,7 @@ enum MenuBarLabelFormatter {
         if state.nextBreakDate != nil {
             return MenuBarLabelContent(
                 symbolName: "hourglass",
-                countdownText: state.countdownText,
+                countdownText: showTimer ? state.countdownText : nil,
                 accessibilityLabel: "Next break countdown",
                 showsUpdateBadge: showsUpdateBadge
             )
@@ -66,7 +67,8 @@ struct MenuBarLabelView: View {
         let content = MenuBarLabelFormatter.content(
             launchPhase: model.launchPhase,
             state: model.appState,
-            showsUpdateBadge: model.updateState.isAvailable
+            showsUpdateBadge: model.updateState.isAvailable,
+            showTimer: model.settings.showTimerInMenuBar
         )
 
         HStack(spacing: 12) {
