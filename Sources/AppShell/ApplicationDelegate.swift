@@ -139,13 +139,17 @@ final class ApplicationDelegate: NSObject, NSApplicationDelegate {
         symbolImage?.isTemplate = true
         button.image = content.showsUpdateBadge ? badgedMenuBarImage(from: symbolImage) : symbolImage
         if let countdown = content.countdownText {
-            button.title = countdown
+            let attributes: [NSAttributedString.Key: Any] = [
+                .font: NSFont.monospacedDigitSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
+            ]
+            button.attributedTitle = NSAttributedString(string: countdown, attributes: attributes)
             button.imagePosition = .imageLeading
-            button.font = NSFont.monospacedSystemFont(ofSize: NSFont.systemFontSize, weight: .regular)
         } else {
             button.title = ""
             button.imagePosition = .imageOnly
         }
+        button.sizeToFit()
+        statusItem.length = button.frame.width + 2
     }
 
     private func badgedMenuBarImage(from baseImage: NSImage?) -> NSImage? {
